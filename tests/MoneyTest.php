@@ -1,5 +1,6 @@
 <?php
 
+use Money\Money;
 use Money\Dollar;
 use Money\Franc;
 use PHPUnit\Framework\TestCase;
@@ -13,10 +14,9 @@ class MoneyTest extends TestCase
      */
     public function multiplication()
     {
-        $five = new Dollar(5);
-
-        $this->assertTrue((new Dollar(10))->equals($five->times(2)));
-        $this->assertTrue((new Dollar(15))->equals($five->times(3)));
+        $five = Money::dollar(5);
+        $this->assertTrue(Money::dollar(10)->equals($five->times(2)));
+        $this->assertTrue(Money::dollar(15)->equals($five->times(3)));
     }
 
     /**
@@ -25,11 +25,11 @@ class MoneyTest extends TestCase
      */
     public function equality()
     {
-        $this->assertTrue((new Dollar(5))->equals(new Dollar(5)));
-        $this->assertFalse((new Dollar(5))->equals(new Dollar(6)));
-        $this->assertTrue((new Franc(5))->equals(new Franc(5)));
-        $this->assertFalse((new Franc(5))->equals(new Franc(6)));
-        $this->assertFalse((new Franc(5))->equals(new Dollar(5)));
+        $this->assertTrue(Money::dollar(5)->equals(new Dollar(5)));
+        $this->assertFalse(Money::dollar(5)->equals(new Dollar(6)));
+        $this->assertTrue(Money::franc(5)->equals(new Franc(5)));
+        $this->assertFalse(Money::franc(5)->equals(new Franc(6)));
+        $this->assertFalse(Money::franc(5)->equals(Money::dollar(5)));
     }
 
     /**
@@ -38,9 +38,9 @@ class MoneyTest extends TestCase
      */
     public function franMultiplication()
     {
-        $five = new Franc(5);
+        $five = Money::franc(5);
 
-        $this->assertTrue((new Franc(10))->equals($five->times(2)));
-        $this->assertTrue((new Franc(15))->equals($five->times(3)));
+        $this->assertTrue(Money::franc(10)->equals($five->times(2)));
+        $this->assertTrue(Money::franc(15)->equals($five->times(3)));
     }
 }

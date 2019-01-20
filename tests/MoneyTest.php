@@ -7,23 +7,22 @@ class MoneyTest extends TestCase
 {
 
     /**
-     * 乗算
+     * 乗算 timesメソッドの比較
      * @test
      */
-    public function Multiplication()
+    public function multiplication()
     {
         $five = new Dollar(5);
-        $product = $five->times(2);
-        $this->assertSame(10, $product->amount);
-        $product = $five->times(3);
-        $this->assertSame(15, $product->amount);
+
+        $this->assertTrue((new Dollar(10))->equals($five->times(2)));
+        $this->assertTrue(new Dollar(15), $five->times(3));
     }
 
     /**
      * 同等 三角測量
      * @test
      */
-    public function Equality()
+    public function equality()
     {
         $this->assertTrue((new Dollar(5))->equals(new Dollar(5)));
         $this->assertFalse((new Dollar(5))->equals(new Dollar(6)));

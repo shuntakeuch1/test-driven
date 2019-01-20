@@ -1,13 +1,14 @@
 <?php
 
 use Money\Dollar;
+use Money\Franc;
 use PHPUnit\Framework\TestCase;
 
 class MoneyTest extends TestCase
 {
 
     /**
-     * 乗算 timesメソッドの比較
+     * 乗算
      * @test
      */
     public function multiplication()
@@ -15,7 +16,7 @@ class MoneyTest extends TestCase
         $five = new Dollar(5);
 
         $this->assertTrue((new Dollar(10))->equals($five->times(2)));
-        $this->assertTrue(new Dollar(15), $five->times(3));
+        $this->assertTrue((new Dollar(15))->equals($five->times(3)));
     }
 
     /**
@@ -26,5 +27,17 @@ class MoneyTest extends TestCase
     {
         $this->assertTrue((new Dollar(5))->equals(new Dollar(5)));
         $this->assertFalse((new Dollar(5))->equals(new Dollar(6)));
+    }
+
+    /**
+     * 乗算
+     * @test
+     */
+    public function franMultiplication()
+    {
+        $five = new Franc(5);
+
+        $this->assertTrue((new Franc(10))->equals($five->times(2)));
+        $this->assertTrue((new Franc(15))->equals($five->times(3)));
     }
 }

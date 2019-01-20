@@ -2,7 +2,7 @@
 
 namespace Money;
 
-abstract class Money
+class Money
 {
     /** @var int  */
     protected $amount;
@@ -24,7 +24,10 @@ abstract class Money
      * @param int $multiplier
      * @return Money
      */
-    abstract public function times(int $multiplier): Money;
+    public function times(int $multiplier): Money
+    {
+        return new Money($this->amount * $multiplier, $this->currency);
+    }
 
     /**
      * @return string
@@ -41,7 +44,7 @@ abstract class Money
     public function equals(Money $money): bool
     {
         return $this->amount === $money->amount
-            && get_class($this) === get_class($money);
+            && $this->currency === $money->currency;
     }
 
     /**

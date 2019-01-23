@@ -1,8 +1,7 @@
 <?php
 
 use Money\Money;
-use Money\Dollar;
-use Money\Franc;
+use Money\Bank;
 use PHPUnit\Framework\TestCase;
 
 class MoneyTest extends TestCase
@@ -38,5 +37,18 @@ class MoneyTest extends TestCase
     {
         $this->assertSame("USD", Money::dollar(1)->currency());
         $this->assertSame("CHF", Money::franc(1)->currency());
+    }
+
+    /**
+     * 足し算
+     * @test
+     */
+    public function simpleAddition()
+    {
+        $five = Money::dollar(5);
+        $sum = $five->plus($five);
+        $bank = new Bank();
+        $reduced = $bank->reduce($sum, "USD");
+        $this->assertTrue(Money::dollar(10)->equals($reduced));
     }
 }

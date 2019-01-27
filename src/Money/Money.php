@@ -31,11 +31,11 @@ class Money implements Expression
 
     /**
      * @param Money $addend
-     * @return Money
+     * @return Sum
      */
-    public function plus(Money $addend): Expression
+    public function plus(Money $addend): Sum
     {
-        return new Money($this->amount + $addend->amount, $this->currency);
+        return new Sum($this, $addend);
     }
 
     /**
@@ -72,5 +72,15 @@ class Money implements Expression
     public static function franc(int $amount): Money
     {
         return new Money($amount, "CHF");
+    }
+
+    public function amount(): int
+    {
+        return $this->amount;
+    }
+
+    public function reduce(string $to): Money
+    {
+        return $this;
     }
 }

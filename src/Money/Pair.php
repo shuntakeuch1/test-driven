@@ -18,7 +18,7 @@ class Pair
 
     public function equals(Pair $pair): bool
     {
-        return ($this->from === $pair->from) && ($this->to === $pair->to);
+        return $this->from === $pair->from && $this->to === $pair->to;
     }
 
     public function hashCode()

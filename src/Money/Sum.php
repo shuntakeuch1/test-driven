@@ -2,17 +2,15 @@
 
 namespace Money;
 
-use phpDocumentor\Reflection\Types\Null_;
-
 class Sum implements Expression
 {
-    /** @var Money */
+    /** @var Expression */
     public $augend;
 
-    /** @var Money */
+    /** @var Expression */
     public $addend;
 
-    public function __construct(Money $augend, Money $addend)
+    public function __construct(Expression $augend, Expression $addend)
     {
         $this->augend = $augend;
         $this->addend = $addend;

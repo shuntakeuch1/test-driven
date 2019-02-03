@@ -11,40 +11,67 @@ class TestCase
         $this->name = $name;
     }
 
-    public function run()
+    public function setUp()
     {
-        call_user_func([$this, $this->name]);
     }
 
+    public function run()
+    {
+        $this->setUp();
+        call_user_func([$this, $this->name]);
+    }
 }
 
 class WasRun extends TestCase
 {
-    public $wasRun;
+    private $wasRun;
+    private $wasSetUp;
 
-    public function __construct($name)
+    public function setUp()
     {
-        parent::__construct($name);
         $this->wasRun = false;
+        $this->wasSetUp = 1;
     }
 
     public function testMethod()
     {
         $this->wasRun = 1;
     }
+
+    public function wasRun()
+    {
+        return $this->wasRun;
+    }
+
+    public function wasSetUp()
+    {
+        return $this->wasSetUp;
+    }
 }
 
 class TestCaseTest extends TestCase
 {
+    private $test;
+
+    public function setUp()
+    {
+        $this->test = new WasRun('testMethod');
+    }
+
     public function testRunning()
     {
-        $test = new WasRun("testMethod");
-        assert(!$test->wasRun);
-        $test->run();
-        assert($test->wasRun);
+        $this->test->run();
+        assert($this->test->wasRun());
+    }
+
+    public function testSetUp()
+    {
+        $this->test->run();
+        assert($this->test->wasSetUp());
     }
 }
 
 ini_set('assert.active', '1');
 ini_set('assert.exception', '1');
 (new TestCaseTest('testRunning'))->run();
+(new TestCaseTest('testSetUp'))->run();

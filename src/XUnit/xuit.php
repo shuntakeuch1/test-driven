@@ -15,27 +15,38 @@ class TestCase
     {
     }
 
+    public function tearDown()
+    {
+    }
+
     public function run()
     {
         $this->setUp();
         call_user_func([$this, $this->name]);
+        $this->tearDown();
     }
 }
 
 class WasRun extends TestCase
 {
     private $wasRun;
-    private $wasSetUp;
+    private $log;
 
     public function setUp()
     {
         $this->wasRun = false;
-        $this->wasSetUp = 1;
+        $this->log = "setUp ";
     }
 
     public function testMethod()
     {
         $this->wasRun = 1;
+        $this->log = $this->log . "testMethod ";
+    }
+
+    public function tearDown()
+    {
+        $this->log = $this->log . "tearDown ";
     }
 
     public function wasRun()
@@ -43,35 +54,22 @@ class WasRun extends TestCase
         return $this->wasRun;
     }
 
-    public function wasSetUp()
+    public function log()
     {
-        return $this->wasSetUp;
+        return $this->log;
     }
 }
 
 class TestCaseTest extends TestCase
 {
-    private $test;
-
-    public function setUp()
+    public function testTemplateMethod()
     {
-        $this->test = new WasRun('testMethod');
-    }
-
-    public function testRunning()
-    {
-        $this->test->run();
-        assert($this->test->wasRun());
-    }
-
-    public function testSetUp()
-    {
-        $this->test->run();
-        assert($this->test->wasSetUp());
+        $test = new WasRun('testMethod');
+        $test->run();
+        assert("setUp testMethod tearDown " == $test->log());
     }
 }
 
 ini_set('assert.active', '1');
 ini_set('assert.exception', '1');
-(new TestCaseTest('testRunning'))->run();
-(new TestCaseTest('testSetUp'))->run();
+(new TestCaseTest('testTemplateMethod'))->run();

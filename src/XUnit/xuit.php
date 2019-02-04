@@ -23,9 +23,13 @@ class TestCase
     {
         $result = new TestResult();
         $result->testStarted();
-
         $this->setUp();
-        call_user_func([$this, $this->name]);
+        try {
+            call_user_func([$this, $this->name]);
+        } catch (\Exception $e) {
+            $result->testFailed();
+        }
+
         $this->tearDown();
 
         return $result;
@@ -36,10 +40,12 @@ class TestResult
 {
 
     private $runCount;
+    private $errorCount;
 
     public function __construct()
     {
         $this->runCount = 0;
+        $this->errorCount = 0;
     }
 
     public function testStarted()
@@ -47,9 +53,14 @@ class TestResult
         $this->runCount++ ;
     }
 
+    public  function testFailed()
+    {
+        $this->errorCount++ ;
+    }
+
     public function summary()
     {
-        return sprintf('%d run, 0 failed', $this->runCount);
+        return sprintf('%d run, %d failed', $this->runCount, $this->errorCount);
     }
 }
 
@@ -64,7 +75,7 @@ class WasRun extends TestCase
 
     public function testMethod()
     {
-        $this->log = $this->log . "testMethod ";
+        $this->log .= "testMethod ";
     }
 
     public function testBrokenMethod()
@@ -105,11 +116,20 @@ class TestCaseTest extends TestCase
         $result = $test->run();
         assert('1 run, 1 failed' === $result->summary());
     }
+
+    public function testFailedResultFormatting()
+    {
+        $result = new TestResult();
+        $result->testStarted();
+        $result->testFailed();
+        assert('1 run, 1 failed' == $result->summary());
+    }
 }
 
 ini_set('assert.active', '1');
 ini_set('assert.exception', '1');
 
-(new TestCaseTest('testTemplateMethod'))->run();
-(new TestCaseTest('testResult'))->run();
-// (new TestCaseTest('testFailedResult'))->run();
+(new TestCaseTest('testTemplateMethod'))->run()->summary();
+(new TestCaseTest('testResult'))->run()->summary();
+(new TestCaseTest('testFailedResult'))->run()->summary();
+(new TestCaseTest('testFailedResultFormatting'))->run()->summary();

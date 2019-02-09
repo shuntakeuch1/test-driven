@@ -2,7 +2,6 @@
 
 namespace Money;
 
-
 class Pair
 {
     /** @var string */

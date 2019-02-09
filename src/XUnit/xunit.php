@@ -37,7 +37,6 @@ class TestCase
 
 class TestResult
 {
-
     private $runCount;
     private $errorCount;
 
@@ -52,7 +51,7 @@ class TestResult
         $this->runCount++ ;
     }
 
-    public  function testFailed()
+    public function testFailed()
     {
         $this->errorCount++ ;
     }
@@ -155,7 +154,7 @@ class TestSuite
 
     public function run($result)
     {
-        foreach ($this->tests as $test){
+        foreach ($this->tests as $test) {
             $test->run($result);
         }
     }
